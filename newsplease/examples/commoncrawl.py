@@ -74,7 +74,7 @@ my_log_level = logging.INFO
 # json export style
 my_json_export_style = 1  # 0 (minimize), 1 (pretty)
 # number of extraction processes
-my_number_of_extraction_processes = 16
+my_number_of_extraction_processes = 100
 # if True, the WARC file will be deleted after all articles have been extracted from it
 my_delete_warc_after_extraction = True
 # if True, will continue extraction from the latest fully downloaded but not fully extracted WARC files and then
