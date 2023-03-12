@@ -14,6 +14,10 @@ possibility of passing in a your own subclass of CommonCrawlExtractor as
 extractor_cls=... . One use case here is that your subclass can customise
 filtering by overriding `.filter_record(...)`.
 
+In case the script crashes and contains a log message in the beginning that states that only 1 file on AWS storage
+was found, make sure that awscli was correctly installed. You can check that by running aws --version from a terminal.
+If aws is not installed, you can (on Ubuntu) also install it using sudo apt-get install awscli.
+
 This script uses relative imports to ensure that the latest, local version of news-please is used, instead of the one
 that might have been installed with pip. Hence, you must run this script following this workflow.
 git clone https://github.com/fhamborg/news-please.git
@@ -31,7 +35,7 @@ import sys
 import datetime
 from datetime import date
 
-from ..crawler import commoncrawl_crawler as commoncrawl_crawler
+from crawler import commoncrawl_crawler as commoncrawl_crawler
 
 __author__ = "Felix Hamborg"
 __copyright__ = "Copyright 2017"
@@ -40,22 +44,22 @@ __credits__ = ["Sebastian Nagel"]
 
 ############ YOUR CONFIG ############
 # download dir for warc files
-my_local_download_dir_warc = './cc_download_warc/'
-# download dir for articles
-my_local_download_dir_article = './cc_download_articles/'
+my_local_download_dir_warc = '/data/uid1785387/new_ccnews/cc_download_warc_2022_1_1/'
+# download dir for article
+my_local_download_dir_article = '/data/uid1785387/new_ccnews/cc_download_articles_2022_1_1/'
 # hosts (if None or empty list, any host is OK)
 my_filter_valid_hosts = []  # example: ['elrancaguino.cl']
 # start date (if None, any date is OK as start date), as datetime
-my_filter_start_date = None  # datetime.datetime(2016, 1, 1)
+my_filter_start_date = datetime.datetime(2022, 1, 1)  # datetime.datetime(2016, 1, 1)
 # end date (if None, any date is OK as end date), as datetime
-my_filter_end_date = None  # datetime.datetime(2016, 12, 31)
+my_filter_end_date = datetime.datetime(2022, 1, 15)
 # Only .warc files published within [my_warc_files_start_date, my_warc_files_end_date) will be downloaded.
 # Note that the date a warc file has been published does not imply it contains only news
 # articles from that date. Instead, you must assume that the warc file can contain articles
 # from ANY time before the warc file was published, e.g., a warc file published in August 2020
 # may contain news articles from December 2016.
-my_warc_files_start_date = None # example: datetime.datetime(2020, 3, 1)
-my_warc_files_end_date = None # example: datetime.datetime(2020, 3, 2)
+my_warc_files_start_date = datetime.datetime(2022, 1, 1) # example: datetime.datetime(2020, 3, 1)
+my_warc_files_end_date = datetime.datetime(2022, 1, 15) # example: datetime.datetime(2020, 3, 2)
 # if date filtering is strict and news-please could not detect the date of an article, the article will be discarded
 my_filter_strict_date = True
 # if True, the script checks whether a file has been downloaded already and uses that file instead of downloading
@@ -70,7 +74,7 @@ my_log_level = logging.INFO
 # json export style
 my_json_export_style = 1  # 0 (minimize), 1 (pretty)
 # number of extraction processes
-my_number_of_extraction_processes = 1
+my_number_of_extraction_processes = 16
 # if True, the WARC file will be deleted after all articles have been extracted from it
 my_delete_warc_after_extraction = True
 # if True, will continue extraction from the latest fully downloaded but not fully extracted WARC files and then
@@ -80,8 +84,6 @@ my_continue_process = True
 # do not contain any images, so that news-please will crawl the current image from
 # the articles online webpage, if this option is enabled.
 my_fetch_images = False
-# if True, just list the WARC files to be processed, but do not actually download and process them
-my_dry_run=False
 ############ END YOUR CONFIG #########
 
 
@@ -181,8 +183,7 @@ def main():
                                                log_level=my_log_level,
                                                delete_warc_after_extraction=my_delete_warc_after_extraction,
                                                continue_process=True,
-                                               fetch_images=my_fetch_images,
-                                               dry_run=my_dry_run)
+                                               fetch_images=my_fetch_images)
 
 
 if __name__ == "__main__":
