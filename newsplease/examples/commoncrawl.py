@@ -35,7 +35,7 @@ import sys
 import datetime
 from datetime import date
 
-from crawler import commoncrawl_crawler as commoncrawl_crawler
+from ..crawler import commoncrawl_crawler as commoncrawl_crawler
 
 __author__ = "Felix Hamborg"
 __copyright__ = "Copyright 2017"
