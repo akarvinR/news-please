@@ -50,7 +50,7 @@ my_local_download_dir_article = '/data/uid1785387/new_ccnews/cc_download_article
 # hosts (if None or empty list, any host is OK)
 my_filter_valid_hosts = []  # example: ['elrancaguino.cl']
 # start date (if None, any date is OK as start date), as datetime
-my_filter_start_date = datetime.datetime(2022, 1, 1)  # datetime.datetime(2016, 1, 1)
+my_filter_start_date = datetime.datetime(2016, 1, 1)
 # end date (if None, any date is OK as end date), as datetime
 my_filter_end_date = datetime.datetime(2022, 1, 15)
 # Only .warc files published within [my_warc_files_start_date, my_warc_files_end_date) will be downloaded.
@@ -58,7 +58,7 @@ my_filter_end_date = datetime.datetime(2022, 1, 15)
 # articles from that date. Instead, you must assume that the warc file can contain articles
 # from ANY time before the warc file was published, e.g., a warc file published in August 2020
 # may contain news articles from December 2016.
-my_warc_files_start_date = datetime.datetime(2022, 1, 1) # example: datetime.datetime(2020, 3, 1)
+my_warc_files_start_date = datetime.datetime(2016, 1, 1) # example: datetime.datetime(2020, 3, 1)
 my_warc_files_end_date = datetime.datetime(2022, 1, 15) # example: datetime.datetime(2020, 3, 2)
 # if date filtering is strict and news-please could not detect the date of an article, the article will be discarded
 my_filter_strict_date = True
